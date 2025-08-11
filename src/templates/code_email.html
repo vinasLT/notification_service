@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Code - VINAS</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .email-container {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background: #f5f7fa;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .email-content {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #f0d442;
+            padding: 40px 30px;
+            text-align: center;
+            color: #2d2d2d;
+        }
+
+        .logo-container {
+            margin-bottom: 15px;
+        }
+
+        .logo-image {
+            max-width: 180px;
+            max-height: 90px;
+            width: auto;
+            height: auto;
+            display: inline-block;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .header-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1a1a1a;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .description {
+            font-size: 16px;
+            color: #666666;
+            text-align: center;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+
+        .code-container {
+            background: #f0d442;
+            border: 2px solid #e6c636;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .code-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #d4b02a;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .code-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #c4a82e;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .verification-code {
+            font-size: 42px;
+            font-weight: 600;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            color: #1a1a1a;
+            letter-spacing: 8px;
+            margin: 10px 0;
+            user-select: all;
+        }
+
+        .code-info {
+            font-size: 14px;
+            color: #888888;
+            margin-top: 12px;
+        }
+
+        .expiry-notice {
+            background: #fff8e1;
+            border: 1px solid #ffecb3;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .expiry-notice .icon {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .expiry-text {
+            font-size: 15px;
+            color: #f57f17;
+            font-weight: 500;
+        }
+
+        .security-notice {
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .security-notice h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .security-notice p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .footer-links {
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: #d4b02a;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-info {
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+
+        .footer-info p {
+            margin-bottom: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e5e7eb;
+            margin: 20px 0;
+        }
+
+                @media (max-width: 600px) {
+            .email-container {
+                padding: 20px 10px;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .verification-code {
+                font-size: 36px;
+                letter-spacing: 4px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .footer {
+                padding: 20px 15px;
+            }
+
+            .logo-image {
+                max-width: 150px;
+                max-height: 75px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-content">
+            <div class="header">
+                <div class="logo-container">
+                    <!-- Logo image placeholder - replace src with actual logo URL -->
+                    <img src="{{ logo_url }}" alt="Company Logo" class="logo-image" />
+                    <!-- Fallback text logo if no image provided -->
+                    <!-- <div class="logo">VINAS</div> -->
+                </div>
+                <div class="header-subtitle">Secure Account Verification</div>
+            </div>
+
+            <div class="content">
+                <h1 class="title">Verification Code</h1>
+                <p class="description">
+                    We received a request to verify your account.
+                    Please use the code below to complete the verification process.
+                </p>
+
+                <div class="code-container">
+                    <div class="code-label">Your Code</div>
+                    <div class="verification-code">{{ code }}</div>
+                    <div class="code-info">Click the code to copy</div>
+                </div>
+
+                <div class="expiry-notice">
+                    <div class="icon">⏰</div>
+                    <div class="expiry-text">
+                        Code expires in {{ expire_minutes }} minutes
+                    </div>
+                </div>
+
+                <div class="security-notice">
+                    <h3>🔒 Security Information</h3>
+                    <p>
+                        If you didn't request this code, please ignore this email.
+                        Your account will remain secure. Never share this code with anyone.
+                    </p>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="footer-links">
+                    <a href="{{ link }}">Our Website</a>
+                    <a href="{{ support_link }}">Support</a>
+                    <a href="{{ privacy_link }}">Privacy Policy</a>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="footer-info">
+                    <p>&copy; {{ year }} {{ company_name }}. All rights reserved.</p>
+                    <p>User ID: {{ user_uuid }}</p>
+                    <p>Notification ID: {{ notification_uuid }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
