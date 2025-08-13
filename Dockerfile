@@ -3,7 +3,8 @@ FROM python:3.13-slim
 ENV POETRY_VIRTUALENVS_CREATE=false \
     POETRY_NO_INTERACTION=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    POETRY_REQUESTS_TIMEOUT=300
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -22,8 +23,10 @@ RUN chmod 755 /usr/local/bin/entrypoint.sh \
     && sed -i 's/\r$//' /usr/local/bin/entrypoint.sh
 
 COPY pyproject.toml poetry.lock* /app/
-RUN poetry install --only main --no-root
+RUN poetry config experimental.new-installer false \
+    && poetry install --only main --no-root --no-directory
 
+# Теперь копируем весь код
 COPY . /app
 
 EXPOSE 8000
