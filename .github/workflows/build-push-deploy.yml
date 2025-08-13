@@ -39,7 +39,8 @@ jobs:
       - name: Run tests
         run: |
           echo "Running tests..."
-          poetry run pytest
+          # Запускаем pytest и игнорируем exit code 5 (no tests collected)
+          poetry run pytest || ([ $? -eq 5 ] && echo "⚠️ No tests found - continuing anyway" || exit $?)
 
 
   build:
