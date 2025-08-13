@@ -50,6 +50,8 @@ jobs:
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      - name: Verify QEMU and arm64 python
+        run: docker run --rm --platform linux/arm64 python:3.13-slim python -c "import platform,sys; print(platform.platform(), sys.version)"
       - name: Build and push multi-platform image
         uses: docker/build-push-action@v5
         with:
@@ -75,8 +77,6 @@ jobs:
           debug: true
           script: |
             set -x
-            echo "🔁 Pulling latest Docker image..."
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/vinaslt_notification_service:latest
-            echo "📦 Composing up..."
             cd /srv/vinaslt/deploy_conf
             docker compose up -d --build
