@@ -1,14 +1,16 @@
 import asyncio
-from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 from jinja2 import Environment, FileSystemLoader
 import aiosmtplib
 from config import settings
-from schemas import EmailNotification
+from notification_services.notification.schemas.email import EmailNotification
+from utils import BASE_DIR
 
 
 async def send_templated_email(data:EmailNotification):
-    env = Environment(loader=FileSystemLoader('src/templates'))
+    env = Environment(loader=FileSystemLoader(BASE_DIR / 'src/templates'))
     template = env.get_template(data.template_name)
     html_content = template.render(data.context.model_dump())
 
@@ -28,8 +30,6 @@ async def send_templated_email(data:EmailNotification):
     )
 
 
-#
-#
 if __name__ == "__main__":
     smtp_server = "smtp.gmail.com"
     smtp_port = 587

@@ -8,7 +8,7 @@ from config import settings
 from core.logger import logger
 from database.db.session import get_db
 from database.models.notification import NotificationPurpose
-from rabbit_service.custom_consumer import RabbitNotificationConsumer
+from notification_services.rabbit_service.custom_consumer import RabbitNotificationConsumer
 
 
 @asynccontextmanager
@@ -44,4 +44,4 @@ async def health_check():
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, port=8000)
+    uvicorn.run(app, port=8001)

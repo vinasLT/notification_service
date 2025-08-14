@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
-from aio_pika.abc import AbstractRobustConnection, AbstractRobustExchange, AbstractRobustQueue, ExchangeType, \
+from aio_pika.abc import AbstractRobustConnection, AbstractRobustExchange, AbstractRobustQueue, \
     AbstractIncomingMessage, ConsumerTag
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from aio_pika import ExchangeType
 from config import settings
 from core.logger import logger
 

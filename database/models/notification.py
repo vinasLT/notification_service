@@ -4,17 +4,17 @@ from sqlalchemy import Integer, String, DateTime, Enum
 from sqlalchemy.orm import Mapped, mapped_column
 from .base import Base
 
-class NotificationDestination(enum.Enum):
+class NotificationDestination(str, enum.Enum):
     EMAIL = "email"
     SMS = "sms"
 
-class NotificationStatus(enum.Enum):
+class NotificationStatus(str, enum.Enum):
     SUCCESS = "success"
     IN_PROGRESS = "in_progress"
     FAILURE = "failure"
 
-class NotificationPurpose(enum.Enum):
-    AUTH_SEND_CODE = "notification.auth.send_code"
+class NotificationPurpose(str, enum.Enum):
+    AUTH_SEND_CODE = "auth.send_code"
 
 
 class Notification(Base):
