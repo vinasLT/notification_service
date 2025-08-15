@@ -1,8 +1,9 @@
+import asyncio
 from abc import ABC, abstractmethod
 from typing import Any
 
-from notification_services.notification.configs.template_config import TemplateConfig
-from notification_services.notification.factories.context_factory import ContextFactory
+from notification_services.notification.configs.template_config import TemplateConfig, EmailTemplateConfig
+from notification_services.notification.factories.context_factory import ContextFactory, EmailContextFactory
 from notification_services.notification.schemas.email import EmailContext, EmailNotification
 from notification_services.notification.schemas.sms import SMSContext, SMSNotification
 from notification_services.notification.senders.send_email import send_templated_email
@@ -33,7 +34,7 @@ class EmailNotificationService(NotificationService):
         context = self.context_factory.create_context(routing_key, payload, notification_uuid)
 
         if not isinstance(context, EmailContext):
-            raise TypeError(f"Expected SMSContext, got {type(context)}")
+            raise TypeError(f"Expected EmailContext, got {type(context)}")
 
         email_notification = EmailNotification(
             recipient=email,
@@ -68,3 +69,20 @@ class SMSNotificationService(NotificationService):
         )
 
         send_sms(sms_notification)
+
+if __name__ == '__main__':
+    async def main():
+        payload = {
+            "user_uuid": 'test-key',
+            'code': '123456',
+            'destination': 'email',
+            'first_name': 'TEST',
+            'last_name': 'user',
+            'email': 'peyrovskaaa@gmail.com',
+            'expire_minutes': '10',
+            'phone_number': '+32554653453'
+        }
+        notification_service = EmailNotificationService(EmailContextFactory(), EmailTemplateConfig)
+        await notification_service.send_notification(payload, routing_key="auth.reset_password", notification_uuid="test-key")
+    asyncio.run(main())
+

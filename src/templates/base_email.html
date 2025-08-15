@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block email_title %}{{ company_name }}{% endblock %}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .email-container {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background: #f5f7fa;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .email-content {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: {% block header_bg_color %}#f0d442{% endblock %};
+            padding: 40px 30px;
+            text-align: center;
+            color: #2d2d2d;
+        }
+
+        .logo-container {
+            margin-bottom: 15px;
+        }
+
+        .logo-image {
+            max-width: 180px;
+            max-height: 90px;
+            width: auto;
+            height: auto;
+            display: inline-block;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .header-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1a1a1a;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .description {
+            font-size: 16px;
+            color: #666666;
+            text-align: center;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+
+        /* Блок для основного контента - может быть переопределен */
+        .main-content-block {
+            margin: 30px 0;
+        }
+
+        /* Стиль для блока с кодом */
+        .code-container {
+            background: #f0d442;
+            border: 2px solid #e6c636;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .code-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #d4b02a;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .code-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #c4a82e;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .verification-code {
+            font-size: 42px;
+            font-weight: 600;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            color: #1a1a1a;
+            letter-spacing: 8px;
+            margin: 10px 0;
+            user-select: all;
+        }
+
+        .code-info {
+            font-size: 14px;
+            color: #888888;
+            margin-top: 12px;
+        }
+
+        /* Стиль для уведомлений */
+        .notice-box {
+            background: #fff8e1;
+            border: 1px solid #ffecb3;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .notice-box.warning {
+            background: #fff8e1;
+            border-color: #ffecb3;
+        }
+
+        .notice-box.info {
+            background: #e3f2fd;
+            border-color: #90caf9;
+        }
+
+        .notice-box.success {
+            background: #e8f5e9;
+            border-color: #a5d6a7;
+        }
+
+        .notice-box.error {
+            background: #ffebee;
+            border-color: #ef9a9a;
+        }
+
+        .notice-box .icon {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .notice-text {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .notice-box.warning .notice-text {
+            color: #f57f17;
+        }
+
+        .notice-box.info .notice-text {
+            color: #1976d2;
+        }
+
+        .notice-box.success .notice-text {
+            color: #2e7d32;
+        }
+
+        .notice-box.error .notice-text {
+            color: #c62828;
+        }
+
+        /* Стиль для информационного блока */
+        .info-block {
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .info-block h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .info-block p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* Стиль для кнопок */
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 14px 32px;
+            background: {% block button_bg_color %}#f0d442{% endblock %};
+            color: #1a1a1a;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            background: {% block button_hover_color %}#e6c636{% endblock %};
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(240, 212, 66, 0.3);
+        }
+
+        .button.secondary {
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            color: #374151;
+        }
+
+        .button.secondary:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        /* Футер */
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .footer-links {
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: #d4b02a;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-info {
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+
+        .footer-info p {
+            margin-bottom: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e5e7eb;
+            margin: 20px 0;
+        }
+
+        /* Дополнительные утилитарные классы */
+        .text-center {
+            text-align: center;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .mt-30 {
+            margin-top: 30px;
+        }
+
+        .mb-30 {
+            margin-bottom: 30px;
+        }
+
+        /* Блок для пользовательских стилей */
+        {% block custom_styles %}{% endblock %}
+
+        /* Адаптивность */
+        @media (max-width: 600px) {
+            .email-container {
+                padding: 20px 10px;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .verification-code {
+                font-size: 36px;
+                letter-spacing: 4px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .footer {
+                padding: 20px 15px;
+            }
+
+            .logo-image {
+                max-width: 150px;
+                max-height: 75px;
+            }
+
+            .button {
+                padding: 12px 24px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="logo-container">
+                    {% block logo %}
+                        {% if logo_url %}
+                            <img src="{{ logo_url }}" alt="{{ company_name }} Logo" class="logo-image" />
+                        {% else %}
+                            <div class="logo">{{ company_name | default('COMPANY') }}</div>
+                        {% endif %}
+                    {% endblock %}
+                </div>
+                <div class="header-subtitle">
+                    {% block header_subtitle %}Secure Communication{% endblock %}
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="content">
+                {% block content %}
+                    <h1 class="title">{% block content_title %}Welcome{% endblock %}</h1>
+
+                    <p class="description">
+                        {% block content_description %}
+                            This is a default description. Override this block in your template.
+                        {% endblock %}
+                    </p>
+
+                    {% block main_content %}
+                        <!-- Main content goes here -->
+                    {% endblock %}
+
+                    {% block additional_content %}
+                        <!-- Additional content like notices, security info, etc. -->
+                    {% endblock %}
+                {% endblock %}
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                {% block footer %}
+                    <div class="footer-links">
+                        {% block footer_links %}
+                            <a href="{{ website_link | default('#') }}">Our Website</a>
+                            <a href="{{ support_link | default('#') }}">Support</a>
+                            <a href="{{ privacy_link | default('#') }}">Privacy Policy</a>
+                        {% endblock %}
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="footer-info">
+                        {% block footer_info %}
+                            <p>&copy; {{ year | default('2024') }} {{ company_name | default('Company Name') }}. All rights reserved.</p>
+                            {% if user_uuid %}
+                                <p>User ID: {{ user_uuid }}</p>
+                            {% endif %}
+                            {% if notification_uuid %}
+                                <p>Notification ID: {{ notification_uuid }}</p>
+                            {% endif %}
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

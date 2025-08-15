@@ -16,6 +16,10 @@ class EmailTemplateConfig(TemplateConfig):
         NotificationPurpose.AUTH_SEND_CODE.value: {
             "template": "code_email.html",
             "subject": "Your verification code"
+        },
+        NotificationPurpose.AUTH_RESET_PASSWORD.value: {
+            "template": "auth_reset_password.html",
+            "subject": "Reset password code"
         }
     }
 
@@ -32,6 +36,10 @@ class SMSTemplateConfig(TemplateConfig):
     TEMPLATES = {
         NotificationPurpose.AUTH_SEND_CODE.value: {
             "template": "Your code: {code}. Valid for {expire_minutes} minutes.",
+        },
+        NotificationPurpose.AUTH_RESET_PASSWORD.value: {
+            "template": "Your code: {code}. Valid for {expire_minutes} minutes.\n"
+                        "If you dont request this code ignore this message",
         }
     }
 

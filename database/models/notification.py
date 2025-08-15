@@ -15,6 +15,7 @@ class NotificationStatus(str, enum.Enum):
 
 class NotificationPurpose(str, enum.Enum):
     AUTH_SEND_CODE = "auth.send_code"
+    AUTH_RESET_PASSWORD = "auth.reset_password"
 
 
 class Notification(Base):

@@ -3,7 +3,7 @@ from typing import Any
 from datetime import datetime, UTC
 from database.models.notification import NotificationPurpose
 from notification_services.notification.schemas.base_notification_context import BaseNotificationContext
-from notification_services.notification.schemas.email import EmailCodeContext, EmailContext
+from notification_services.notification.schemas.email import EmailCodeContext, EmailContext, EmailResetCodeContext
 from notification_services.notification.schemas.sms import SMSContext
 
 
@@ -28,6 +28,14 @@ class EmailContextFactory(ContextFactory):
                 expire_minutes=payload.get("expire_minutes", 15),
                 year=datetime.now(UTC).year,
                 user_uuid=payload.get("user_uuid"),
+                notification_uuid=notification_uuid
+            ),
+            NotificationPurpose.AUTH_RESET_PASSWORD.value: lambda: EmailResetCodeContext(
+                code=payload.get("code"),
+                expire_minutes=payload.get("expire_minutes", 15),
+                year=datetime.now(UTC).year,
+                user_uuid=payload.get("user_uuid"),
+                user_email=payload.get("email"),
                 notification_uuid=notification_uuid
             )
         }

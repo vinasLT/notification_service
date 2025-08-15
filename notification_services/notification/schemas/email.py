@@ -17,6 +17,14 @@ class EmailCodeContext(EmailContext):
     expire_minutes: int
     year: int
 
+class EmailResetCodeContext(EmailContext):
+    code: str
+    expire_minutes: int
+    year: int
+    user_email: str
+
+
+
 
 class EmailPasswordResetContext(EmailContext):
     reset_link: str
