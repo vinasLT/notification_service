@@ -5,7 +5,6 @@ from notification_services.notification.service import EmailNotificationService,
 
 
 class NotificationRegistry:
-    """Реестр сервисов уведомлений"""
 
     def __init__(self):
         self._services = {}

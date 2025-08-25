@@ -13,7 +13,7 @@ class NotificationStatus(str, enum.Enum):
     IN_PROGRESS = "in_progress"
     FAILURE = "failure"
 
-class NotificationPurpose(str, enum.Enum):
+class NotificationRoutingKey(str, enum.Enum):
     AUTH_SEND_CODE = "auth.send_code"
     AUTH_RESET_PASSWORD = "auth.reset_password"
 
@@ -31,7 +31,7 @@ class Notification(Base):
         Enum(NotificationStatus), nullable=False
     )
 
-    purpose: Mapped[NotificationPurpose] = mapped_column(Enum(NotificationPurpose), nullable=False)
+    routing_key: Mapped[NotificationRoutingKey] = mapped_column(Enum(NotificationRoutingKey), nullable=False)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, default=datetime.now(UTC)

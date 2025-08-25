@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Dict
-from database.models.notification import NotificationPurpose
+from database.models.notification import NotificationRoutingKey
 
 
 class TemplateConfig(ABC):
@@ -13,11 +13,11 @@ class TemplateConfig(ABC):
 
 class EmailTemplateConfig(TemplateConfig):
     TEMPLATES = {
-        NotificationPurpose.AUTH_SEND_CODE.value: {
+        NotificationRoutingKey.AUTH_SEND_CODE.value: {
             "template": "code_email.html",
             "subject": "Your verification code"
         },
-        NotificationPurpose.AUTH_RESET_PASSWORD.value: {
+        NotificationRoutingKey.AUTH_RESET_PASSWORD.value: {
             "template": "auth_reset_password.html",
             "subject": "Reset password code"
         }
@@ -34,10 +34,10 @@ class EmailTemplateConfig(TemplateConfig):
 class SMSTemplateConfig(TemplateConfig):
 
     TEMPLATES = {
-        NotificationPurpose.AUTH_SEND_CODE.value: {
+        NotificationRoutingKey.AUTH_SEND_CODE.value: {
             "template": "Your code: {code}. Valid for {expire_minutes} minutes.",
         },
-        NotificationPurpose.AUTH_RESET_PASSWORD.value: {
+        NotificationRoutingKey.AUTH_RESET_PASSWORD.value: {
             "template": "Your code: {code}. Valid for {expire_minutes} minutes.\n"
                         "If you dont request this code ignore this message",
         }

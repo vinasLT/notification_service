@@ -3,7 +3,7 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
-from database.models.notification import NotificationDestination, NotificationStatus, NotificationPurpose
+from database.models.notification import NotificationDestination, NotificationStatus, NotificationRoutingKey
 
 
 class NotificationCreate(BaseModel):
@@ -11,7 +11,7 @@ class NotificationCreate(BaseModel):
     uuid_key: str
     destination: NotificationDestination
     status: NotificationStatus
-    purpose: NotificationPurpose
+    routing_key: NotificationRoutingKey
     created_at: Optional[datetime] = None
 
 
@@ -20,7 +20,7 @@ class NotificationUpdate(BaseModel):
     uuid_key: Optional[str] = None
     destination: Optional[NotificationDestination] = None
     status: Optional[NotificationStatus] = None
-    purpose: Optional[NotificationPurpose] = None
+    routing_key: Optional[NotificationRoutingKey] = None
     created_at: Optional[datetime] = None
 
 

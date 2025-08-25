@@ -27,7 +27,7 @@ def upgrade() -> None:
     sa.Column('uuid_key', sa.String(), nullable=False),
     sa.Column('destination', sa.Enum('EMAIL', 'SMS', name='notificationdestination'), nullable=False),
     sa.Column('status', sa.Enum('SUCCESS', 'IN_PROGRESS', 'FAILURE', name='notificationstatus'), nullable=False),
-    sa.Column('purpose', sa.Enum('AUTH_SEND_CODE', name='notificationpurpose'), nullable=False),
+    sa.Column('routing_key', sa.Enum('AUTH_SEND_CODE', name='notificationpurpose'), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )

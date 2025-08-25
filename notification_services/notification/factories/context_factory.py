@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any
 from datetime import datetime, UTC
-from database.models.notification import NotificationPurpose
+from database.models.notification import NotificationRoutingKey
 from notification_services.notification.schemas.base_notification_context import BaseNotificationContext
 from notification_services.notification.schemas.email import EmailCodeContext, EmailContext, EmailResetCodeContext
 from notification_services.notification.schemas.sms import SMSContext
@@ -23,14 +23,14 @@ class EmailContextFactory(ContextFactory):
 
 
         context_map = {
-            NotificationPurpose.AUTH_SEND_CODE.value: lambda: EmailCodeContext(
+            NotificationRoutingKey.AUTH_SEND_CODE.value: lambda: EmailCodeContext(
                 code=payload.get("code"),
                 expire_minutes=payload.get("expire_minutes", 15),
                 year=datetime.now(UTC).year,
                 user_uuid=payload.get("user_uuid"),
                 notification_uuid=notification_uuid
             ),
-            NotificationPurpose.AUTH_RESET_PASSWORD.value: lambda: EmailResetCodeContext(
+            NotificationRoutingKey.AUTH_RESET_PASSWORD.value: lambda: EmailResetCodeContext(
                 code=payload.get("code"),
                 expire_minutes=payload.get("expire_minutes", 15),
                 year=datetime.now(UTC).year,
@@ -56,7 +56,7 @@ class SMSContextFactory(ContextFactory):
         from notification_services.notification.schemas.sms import SMSCodeContext, SMSContext
 
         context_map = {
-            NotificationPurpose.AUTH_SEND_CODE.value: lambda: SMSCodeContext(
+            NotificationRoutingKey.AUTH_SEND_CODE.value: lambda: SMSCodeContext(
                 code=payload.get("code"),
                 expire_minutes=payload.get("expire_minutes", 15),
                 user_uuid=payload.get("user_uuid"),

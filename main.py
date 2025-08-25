@@ -3,11 +3,12 @@ from contextlib import asynccontextmanager
 import uvicorn
 from aio_pika import connect_robust
 from fastapi import FastAPI
+from fastapi_problem.handler import new_exception_handler, add_exception_handler
 
 from config import settings
 from core.logger import logger
 from database.db.session import get_db
-from database.models.notification import NotificationPurpose
+from database.models.notification import NotificationRoutingKey
 from notification_services.rabbit_service.custom_consumer import RabbitNotificationConsumer
 
 
@@ -17,7 +18,7 @@ async def lifespan(_: FastAPI):
     connection = await connect_robust(settings.RABBITMQ_URL)
     db = await get_db()
 
-    consumer = RabbitNotificationConsumer(connection, db, [member.value for member in NotificationPurpose])
+    consumer = RabbitNotificationConsumer(connection, db, [member.value for member in NotificationRoutingKey])
     await consumer.set_up()
     await consumer.start_consuming()
     yield
@@ -36,6 +37,10 @@ app = FastAPI(title='Notification Service',
               redoc_url=redoc_url,
               openapi_url=openapi_url,
               lifespan=lifespan)
+
+
+eh = new_exception_handler()
+add_exception_handler(app, eh)
 
 
 @app.get("/health")

@@ -6,7 +6,7 @@ from aio_pika.abc import AbstractIncomingMessage
 
 from core.logger import logger
 from database.crud.notification import NotificationService as DBNotificationService
-from database.models.notification import NotificationStatus, NotificationPurpose, NotificationDestination
+from database.models.notification import NotificationStatus, NotificationRoutingKey, NotificationDestination
 from database.schemas.notification import NotificationUpdate, NotificationCreate
 from notification_services.notification.registry import NotificationRegistry
 from notification_services.rabbit_service.base import RabbitBaseService
@@ -36,10 +36,10 @@ class RabbitNotificationConsumer(RabbitBaseService):
         })
 
         try:
-            purpose = NotificationPurpose(routing_key)
+            purpose = NotificationRoutingKey(routing_key)
             destination = NotificationDestination(destination_str)
         except ValueError as e:
-            logger.error("Invalid notification purpose or destination", extra={
+            logger.error("Invalid notification routing_key or destination", extra={
                 "routing_key": routing_key,
                 "destination": destination_str,
                 "error": str(e)
@@ -51,7 +51,7 @@ class RabbitNotificationConsumer(RabbitBaseService):
             uuid_key=str(uuid.uuid4()),
             destination=destination,
             status=NotificationStatus.IN_PROGRESS,
-            purpose=purpose
+            routing_key=purpose
         )
         notification_obj = await notification_service.create(data)
 

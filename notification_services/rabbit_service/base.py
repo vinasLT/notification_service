@@ -1,13 +1,11 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod, ABC
 from typing import List, Optional
 
 from aio_pika.abc import AbstractRobustConnection, AbstractRobustExchange, AbstractRobustQueue, \
-    AbstractIncomingMessage, ConsumerTag
+    AbstractIncomingMessage, ConsumerTag, ExchangeType
 from sqlalchemy.ext.asyncio import AsyncSession
-from aio_pika import ExchangeType
 from config import settings
 from core.logger import logger
-
 
 
 class RabbitBaseService(ABC):
@@ -60,7 +58,7 @@ class RabbitBaseService(ABC):
 
             self.exchange = await channel.declare_exchange(
                 self.exchange_name,
-                ExchangeType.TOPIC,
+                type=ExchangeType.TOPIC,
                 durable=self.durable
             )
 
@@ -219,7 +217,6 @@ class RabbitBaseService(ABC):
 
 if __name__ == "__main__":
     import asyncio
-    from aio_pika import connect_robust, ExchangeType
 
 
     class NotificationProcessService(RabbitBaseService):
