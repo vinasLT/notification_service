@@ -37,11 +37,11 @@ class Settings(BaseSettings):
     # twilio
     TWILIO_ACCOUNT_SID: str
     TWILIO_AUTH_TOKEN: str
-    TWILIO_PHONE_NUMBER: str = '+16056362156'
+    TWILIO_MESSAGING_SERVICE_SID: str = 'MG0a97155aaa7c29c8d756809d8c7a774d'
 
     # Email
-    SENDER_EMAIL: str = 'peyrovskaaa@gmail.com'
-    SMPT_SERVER: str = 'smtp.gmail.com'
+    SENDER_EMAIL: str = 'noreplay@vinas.lt'
+    SMPT_SERVER: str = 'smtp.hostinger.com'
     SMPT_PORT: int = 587
     EMAIL_PASSWORD: str
 

@@ -33,7 +33,7 @@ def send_sms(sms_data: SMSNotification)-> MessageInstance | None:
     try:
         sms_message = client.messages.create(
             body=branded_message,
-            from_=settings.TWILIO_PHONE_NUMBER,
+            messaging_service_sid=settings.TWILIO_MESSAGING_SERVICE_SID,
             to=phone_number
         )
         logger.debug('Sms notification sent', extra={
