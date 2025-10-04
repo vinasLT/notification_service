@@ -1,8 +1,8 @@
 """init
 
-Revision ID: 69d889ac0a1b
+Revision ID: 089551a8f7e3
 Revises: 
-Create Date: 2025-08-11 11:48:03.569683
+Create Date: 2025-10-04 21:44:02.234669
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '69d889ac0a1b'
+revision: str = '089551a8f7e3'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -27,7 +27,7 @@ def upgrade() -> None:
     sa.Column('uuid_key', sa.String(), nullable=False),
     sa.Column('destination', sa.Enum('EMAIL', 'SMS', name='notificationdestination'), nullable=False),
     sa.Column('status', sa.Enum('SUCCESS', 'IN_PROGRESS', 'FAILURE', name='notificationstatus'), nullable=False),
-    sa.Column('routing_key', sa.Enum('AUTH_SEND_CODE', name='notificationpurpose'), nullable=False),
+    sa.Column('routing_key', sa.Enum('AUTH_SEND_CODE', 'AUTH_RESET_PASSWORD', name='notificationroutingkey'), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
