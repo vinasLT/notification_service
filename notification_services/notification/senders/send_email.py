@@ -5,7 +5,7 @@ from email.mime.text import MIMEText
 from jinja2 import Environment, FileSystemLoader
 import aiosmtplib
 from config import settings
-from notification_services.notification.schemas.email import EmailNotification
+from notification_services.notification.schemas.email import EmailNotification, EmailContext, EmailCodeContext
 from utils import BASE_DIR
 
 
@@ -20,14 +20,18 @@ async def send_templated_email(data:EmailNotification):
     msg['Subject'] = data.subject
     msg.attach(MIMEText(html_content, "html"))
 
-    await aiosmtplib.send(
-        msg,
-        hostname=settings.SMPT_SERVER,
-        port=settings.SMPT_PORT,
-        start_tls=True,
-        username=settings.SENDER_EMAIL,
-        password=settings.EMAIL_PASSWORD,
-    )
+    try:
+        await aiosmtplib.send(
+            msg,
+            hostname=settings.SMPT_SERVER,
+            port=settings.SMPT_PORT,
+            start_tls=True,
+            username=settings.SENDER_EMAIL,
+            password=settings.EMAIL_PASSWORD,
+        )
+        print("Email sent successfully")
+    except Exception as e:
+        print(f"Error while sending email: {e}")
 
 
 if __name__ == "__main__":
@@ -39,12 +43,7 @@ if __name__ == "__main__":
     recipient = settings.SENDER_EMAIL
     subject = "Письмо с шаблоном Jinja2"
 
-    context = {
-        "expire_minutes": "15",
-        "code": "12345",
-        "year": '2025',
-        'company_name': 'VINAS',
-        'link': 'https://www.google.com'
-    }
-    asyncio.run(send_templated_email(recipient, subject, "code_email.html", context))
-#
+
+    context = EmailCodeContext(user_uuid='test-key', notification_uuid='test-key', code='123456', expire_minutes=10, year=2023)
+
+    asyncio.run(send_templated_email(EmailNotification(recipient='peyrovskaaa@gmail.com', subject=subject, context=context, template_name='code_email.html')))

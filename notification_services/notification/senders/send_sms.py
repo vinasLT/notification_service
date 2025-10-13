@@ -4,7 +4,7 @@ from config import settings
 from core.logger import logger
 from twilio.rest import Client
 
-from notification_services.notification.schemas.sms import SMSNotification
+from notification_services.notification.schemas.sms import SMSNotification, SMSContext
 
 client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
 
@@ -49,3 +49,7 @@ def send_sms(sms_data: SMSNotification)-> MessageInstance | None:
             'error': str(e)
         })
         return None
+
+if __name__ == '__main__':
+
+    send_sms(SMSNotification(message='Hello this it test message!', recipient='+380634379178', context=SMSContext(user_uuid='test', notification_uuid='test')))

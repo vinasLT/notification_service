@@ -1,6 +1,6 @@
 from enum import Enum
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from utils import BASE_DIR
 
@@ -12,8 +12,8 @@ class Environment(str, Enum):
 class Settings(BaseSettings):
     # Application
     APP_NAME: str = 'notification-service'
-    COMPANY_NAME: str = 'Vinas'
-    COMPANY_LINK: str = 'http://localhost'
+    COMPANY_NAME: str = 'VINAS'
+    COMPANY_LINK: str = 'https://demo.vinas.lt'
     DEBUG: bool = True
     ROOT_PATH: str = ''
     ENVIRONMENT: Environment = Environment.DEVELOPMENT
@@ -47,8 +47,7 @@ class Settings(BaseSettings):
 
     LOGO_URL: str = 'https://i.imgur.com/QNuAY7v.png'
 
-    class Config:
-        env_file = BASE_DIR / ".env"
+    model_config = SettingsConfigDict(env_file=BASE_DIR / ".env", extra="ignore")
 
 
 settings = Settings()

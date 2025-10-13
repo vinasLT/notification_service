@@ -31,10 +31,10 @@
         }
 
         .header {
-            background: {% block header_bg_color %}#f0d442{% endblock %};
+            background: {% block header_bg_color %}#ffffff{% endblock %};
             padding: 40px 30px;
             text-align: center;
-            color: #2d2d2d;
+            color: #000000;
         }
 
         .logo-container {
@@ -68,7 +68,7 @@
         .title {
             font-size: 28px;
             font-weight: 600;
-            color: #1a1a1a;
+            color: #000000;
             text-align: center;
             margin-bottom: 16px;
         }
@@ -88,8 +88,8 @@
 
         /* Стиль для блока с кодом */
         .code-container {
-            background: #f0d442;
-            border: 2px solid #e6c636;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
             border-radius: 12px;
             padding: 30px 20px;
             text-align: center;
@@ -104,14 +104,14 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: #d4b02a;
+            background: #e5e7eb;
             border-radius: 12px 12px 0 0;
         }
 
         .code-label {
             font-size: 14px;
             font-weight: 500;
-            color: #c4a82e;
+            color: #000000;
             margin-bottom: 12px;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -121,7 +121,7 @@
             font-size: 42px;
             font-weight: 600;
             font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-            color: #1a1a1a;
+            color: #000000;
             letter-spacing: 8px;
             margin: 10px 0;
             user-select: all;
@@ -218,8 +218,9 @@
         .button {
             display: inline-block;
             padding: 14px 32px;
-            background: {% block button_bg_color %}#f0d442{% endblock %};
-            color: #1a1a1a;
+            background: {% block button_bg_color %}#ffffff{% endblock %};
+            border: 1px solid #e5e7eb;
+            color: #000000;
             text-decoration: none;
             border-radius: 8px;
             font-weight: 600;
@@ -228,9 +229,9 @@
         }
 
         .button:hover {
-            background: {% block button_hover_color %}#e6c636{% endblock %};
+            background: {% block button_hover_color %}#f3f4f6{% endblock %};
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(240, 212, 66, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .button.secondary {
@@ -257,7 +258,7 @@
         }
 
         .footer-links a {
-            color: #d4b02a;
+            color: #000000;
             text-decoration: none;
             margin: 0 15px;
             font-size: 14px;
