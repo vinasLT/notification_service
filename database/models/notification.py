@@ -16,6 +16,9 @@ class NotificationStatus(str, enum.Enum):
 class NotificationRoutingKey(str, enum.Enum):
     AUTH_SEND_CODE = "auth.send_code"
     AUTH_RESET_PASSWORD = "auth.reset_password"
+    NEW_BID_PLACED = "bid.new_bid_placed"
+    YOU_WON_BID = "bid.you_won_bid"
+    YOU_LOST_BID = "bid.you_lost_bid"
 
 
 class Notification(Base):

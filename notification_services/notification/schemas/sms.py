@@ -1,3 +1,5 @@
+from typing import Optional
+
 from notification_services.notification.schemas.base_notification_context import BaseNotificationContext, BaseNotification
 
 
@@ -12,3 +14,11 @@ class SMSNotification(BaseNotification):
 class SMSCodeContext(SMSContext):
     code: str
     expire_minutes: int
+
+
+class SMSBidResultContext(SMSContext):
+    lot_id: int
+    bid_amount: int
+    final_bid: Optional[int] = None
+    vehicle_title: Optional[str] = None
+    auction: Optional[str] = None

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from config import settings
 from notification_services.notification.schemas.base_notification_context import BaseNotificationContext, BaseNotification
 
@@ -11,6 +13,20 @@ class EmailNotification(BaseNotification):
     subject: str
     template_name: str
     context: EmailContext
+
+class EmailBidClass(EmailContext):
+    bid_amount: int
+    auction_data: datetime
+    vehicle_title: str
+    vehicle_image: str
+    auction: str
+    lot_id: int
+
+class EmailNewBidPlacedContext(EmailBidClass):
+    current_bid: int
+
+class EmailBidLostWonContext(EmailBidClass):
+    final_bid: int
 
 class EmailCodeContext(EmailContext):
     code: str
