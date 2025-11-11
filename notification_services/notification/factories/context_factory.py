@@ -34,7 +34,7 @@ class EmailContextFactory(ContextFactory):
         def build_bid_lost_won_context():
             return EmailBidLostWonContext(
                 bid_amount=payload.get("bid_amount"),
-                auction_data=payload.get("auction_data"),
+                auction_date=payload.get("auction_date"),
                 vehicle_title=payload.get("vehicle_title"),
                 vehicle_image=payload.get("vehicle_image"),
                 auction=payload.get("auction"),

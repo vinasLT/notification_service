@@ -16,7 +16,7 @@ class EmailNotification(BaseNotification):
 
 class EmailBidClass(EmailContext):
     bid_amount: int
-    auction_data: datetime
+    auction_date: datetime
     vehicle_title: str
     vehicle_image: str
     auction: str

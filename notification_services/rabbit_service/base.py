@@ -3,15 +3,15 @@ from typing import List, Optional
 
 from aio_pika.abc import AbstractRobustConnection, AbstractRobustExchange, AbstractRobustQueue, \
     AbstractIncomingMessage, ConsumerTag, ExchangeType
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from config import settings
 from core.logger import logger
 
 
 class RabbitBaseService(ABC):
     def __init__(self, connection: AbstractRobustConnection,
-                 db: AsyncSession,
                  routing_keys: List[str],
+                 db_session_factory: async_sessionmaker[AsyncSession] | None = None,
                  exchange_name: str = settings.RABBITMQ_EXCHANGE_NAME,
                  prefetch_count: int = 10,
                  durable: bool = True,
@@ -25,7 +25,7 @@ class RabbitBaseService(ABC):
         self.durable = durable
         self.routing_keys = routing_keys
         self.max_retries = max_retries
-        self.db = db
+        self.db_session_factory = db_session_factory
 
 
         self.exchange: Optional[AbstractRobustExchange] = None

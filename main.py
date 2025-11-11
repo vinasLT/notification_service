@@ -7,7 +7,7 @@ from fastapi_problem.handler import new_exception_handler, add_exception_handler
 
 from config import settings
 from core.logger import logger
-from database.db.session import get_db
+from database.db.session import AsyncSessionLocal
 from database.models.notification import NotificationRoutingKey
 from notification_services.rabbit_service.custom_consumer import RabbitNotificationConsumer
 
@@ -16,9 +16,11 @@ from notification_services.rabbit_service.custom_consumer import RabbitNotificat
 async def lifespan(_: FastAPI):
     logger.info(f"{settings.APP_NAME} started!")
     connection = await connect_robust(settings.RABBITMQ_URL)
-    db = await get_db()
-
-    consumer = RabbitNotificationConsumer(connection, db, [member.value for member in NotificationRoutingKey])
+    consumer = RabbitNotificationConsumer(
+        connection,
+        [member.value for member in NotificationRoutingKey],
+        AsyncSessionLocal
+    )
     await consumer.set_up()
     await consumer.start_consuming()
     yield
