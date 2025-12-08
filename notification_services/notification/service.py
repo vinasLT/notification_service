@@ -1,14 +1,16 @@
 import asyncio
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Type
 
 from notification_services.notification.configs.template_config import TemplateConfig, EmailTemplateConfig
 from notification_services.notification.factories.context_factory import ContextFactory, EmailContextFactory
+from notification_services.notification.schemas.base_notification_context import BaseNotificationContext
 from notification_services.notification.schemas.email import EmailContext, EmailNotification
 from notification_services.notification.schemas.sms import SMSContext, SMSNotification
+from notification_services.notification.schemas.telegram import TelegramContext
 from notification_services.notification.senders.send_email import send_templated_email
-
 from notification_services.notification.senders.send_sms import send_sms
+from notification_services.notification.senders.send_telegram import send_telegram
 
 
 class NotificationService(ABC):
@@ -20,6 +22,16 @@ class NotificationService(ABC):
     @abstractmethod
     async def send_notification(self, payload: dict[str, Any], routing_key: str, notification_uuid: str):
         pass
+
+    def _prepare_context_and_template(self, payload: dict[str, Any], routing_key: str, notification_uuid: str,
+                                      expected_type: type[BaseNotificationContext]):
+        template_config = self.template_config.get_template_config(routing_key)
+        context = self.context_factory.create_context(routing_key, payload, notification_uuid)
+
+        if not isinstance(context, expected_type):
+            raise TypeError(f"Expected {expected_type.__name__}, got {type(context)}")
+
+        return template_config, context
 
 
 class EmailNotificationService(NotificationService):
@@ -54,11 +66,9 @@ class SMSNotificationService(NotificationService):
         if not phone_number:
             raise ValueError("Phone number is required for SMS notifications")
 
-        template_config = self.template_config.get_template_config(routing_key)
-        context = self.context_factory.create_context(routing_key, payload, notification_uuid)
-
-        if not isinstance(context, SMSContext):
-            raise TypeError(f"Expected SMSContext, got {type(context)}")
+        template_config, context = self._prepare_context_and_template(
+            payload, routing_key, notification_uuid, SMSContext
+        )
 
         message = template_config["template"].format(**context.model_dump())
 
@@ -69,6 +79,19 @@ class SMSNotificationService(NotificationService):
         )
 
         send_sms(sms_notification)
+
+class TelegramNotificationService(NotificationService):
+
+    async def send_notification(self, payload: dict[str, Any], routing_key: str, notification_uuid: str):
+        template_config, context = self._prepare_context_and_template(
+            payload, routing_key, notification_uuid, TelegramContext
+        )
+
+        message = template_config["template"].format(**context.model_dump())
+        message_with_uuid = f"{message}\n\nNotification UUID: {notification_uuid}"
+
+        await send_telegram(message_with_uuid)
+
 
 if __name__ == '__main__':
     async def main():

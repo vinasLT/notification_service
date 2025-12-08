@@ -8,13 +8,20 @@ from notification_services.notification.schemas.email import (
     EmailCodeContext,
     EmailContext,
     EmailNewBidPlacedContext,
+    EmailOrderStatusContext,
     EmailResetCodeContext,
 )
 from notification_services.notification.schemas.sms import (
             SMSBidResultContext,
             SMSCodeContext,
             SMSContext,
+            SMSOrderStatusContext,
         )
+from notification_services.notification.schemas.telegram import (
+    TelegramBidNotification,
+    TelegramContext,
+    TelegramOrderStatusNotification,
+)
 
 
 class ContextFactory(ABC):
@@ -44,6 +51,19 @@ class EmailContextFactory(ContextFactory):
                 notification_uuid=notification_uuid
             )
 
+        def build_order_status_context():
+            return EmailOrderStatusContext(
+                new_order_status=payload.get("new_order_status"),
+                previous_order_status=payload.get("previous_order_status"),
+                order_id=payload.get("order_id"),
+                vin=payload.get("vin"),
+                vehicle_title=payload.get("vehicle_title"),
+                auction=payload.get("auction"),
+                lot_id=payload.get("lot_id"),
+                user_uuid=payload.get("user_uuid"),
+                notification_uuid=notification_uuid
+            )
+
         context_map = {
             NotificationRoutingKey.AUTH_SEND_CODE.value: lambda: EmailCodeContext(
                 code=payload.get("code"),
@@ -62,7 +82,7 @@ class EmailContextFactory(ContextFactory):
             ),
             NotificationRoutingKey.NEW_BID_PLACED.value: lambda: EmailNewBidPlacedContext(
                 bid_amount=payload.get("bid_amount"),
-                auction_data=payload.get("auction_data"),
+                auction_date=payload.get("auction_date"),
                 vehicle_title=payload.get("vehicle_title"),
                 vehicle_image=payload.get("vehicle_image"),
                 auction=payload.get("auction"),
@@ -72,7 +92,8 @@ class EmailContextFactory(ContextFactory):
                 notification_uuid=notification_uuid
             ),
             NotificationRoutingKey.YOU_WON_BID.value: build_bid_lost_won_context,
-            NotificationRoutingKey.YOU_LOST_BID.value: build_bid_lost_won_context
+            NotificationRoutingKey.YOU_LOST_BID.value: build_bid_lost_won_context,
+            NotificationRoutingKey.ORDER_STATUS_UPDATED.value: build_order_status_context,
         }
 
         context_creator = context_map.get(routing_key)
@@ -100,6 +121,19 @@ class SMSContextFactory(ContextFactory):
                 notification_uuid=notification_uuid
             )
 
+        def build_order_status_context():
+            return SMSOrderStatusContext(
+                new_order_status=payload.get("new_order_status"),
+                previous_order_status=payload.get("previous_order_status"),
+                order_id=payload.get("order_id"),
+                vin=payload.get("vin"),
+                vehicle_title=payload.get("vehicle_title"),
+                auction=payload.get("auction"),
+                lot_id=payload.get("lot_id"),
+                user_uuid=payload.get("user_uuid"),
+                notification_uuid=notification_uuid
+            )
+
         context_map = {
             NotificationRoutingKey.AUTH_SEND_CODE.value: lambda: SMSCodeContext(
                 code=payload.get("code"),
@@ -108,7 +142,8 @@ class SMSContextFactory(ContextFactory):
                 notification_uuid=notification_uuid
             ),
             NotificationRoutingKey.YOU_WON_BID.value: lambda: build_bid_result_context(final_bid_fallback=True),
-            NotificationRoutingKey.YOU_LOST_BID.value: build_bid_result_context
+            NotificationRoutingKey.YOU_LOST_BID.value: build_bid_result_context,
+            NotificationRoutingKey.ORDER_STATUS_UPDATED.value: build_order_status_context,
         }
 
         context_creator = context_map.get(routing_key)
@@ -118,4 +153,50 @@ class SMSContextFactory(ContextFactory):
         return SMSContext(
             user_uuid=payload.get("user_uuid"),
             notification_uuid=notification_uuid
+        )
+
+class TelegramContextFactory(ContextFactory):
+    def create_context(self, routing_key: str, payload: dict[str, Any],
+                       notification_uuid: str) -> TelegramContext:
+
+        def build_bid_context():
+            return TelegramBidNotification(
+                is_bid_up=payload.get("is_bid_up"),
+                lot_id=payload.get("lot_id"),
+                bid_amount=payload.get("bid_amount"),
+                user_name=payload.get("user_name"),
+                user_email=payload.get("user_email"),
+                user_phone=payload.get("user_phone"),
+                vehicle_title=payload.get("vehicle_title"),
+                auction=payload.get("auction"),
+                notification_uuid=notification_uuid,
+            )
+
+        def build_order_status_context():
+            return TelegramOrderStatusNotification(
+                new_order_status=payload.get("new_order_status"),
+                previous_order_status=payload.get("previous_order_status"),
+                order_id=payload.get("order_id"),
+                vin=payload.get("vin"),
+                vehicle_title=payload.get("vehicle_title"),
+                auction=payload.get("auction"),
+                lot_id=payload.get("lot_id"),
+                user_name=payload.get("user_name"),
+                user_email=payload.get("user_email"),
+                user_phone=payload.get("user_phone"),
+                notification_uuid=notification_uuid,
+            )
+
+        context_map = {
+            NotificationRoutingKey.NEW_BID_PLACED.value: build_bid_context,
+            NotificationRoutingKey.ORDER_STATUS_UPDATED.value: build_order_status_context,
+
+        }
+
+        context_creator = context_map.get(routing_key)
+        if context_creator:
+            return context_creator()
+
+        return TelegramContext(
+            notification_uuid=notification_uuid,
         )

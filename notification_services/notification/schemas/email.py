@@ -40,11 +40,16 @@ class EmailResetCodeContext(EmailContext):
     user_email: str
 
 
+class EmailOrderStatusContext(EmailContext):
+    new_order_status: str
+    previous_order_status: str
+    order_id: int
+    vin: str
+    vehicle_title: str
+    auction: str
+    lot_id: int
 
 
 class EmailPasswordResetContext(EmailContext):
     reset_link: str
     expire_hours: int
-
-
-

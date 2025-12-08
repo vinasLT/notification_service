@@ -7,6 +7,7 @@ from .base import Base
 class NotificationDestination(str, enum.Enum):
     EMAIL = "email"
     SMS = "sms"
+    TELEGRAM = "telegram"
 
 class NotificationStatus(str, enum.Enum):
     SUCCESS = "success"
@@ -19,6 +20,8 @@ class NotificationRoutingKey(str, enum.Enum):
     NEW_BID_PLACED = "bid.new_bid_placed"
     YOU_WON_BID = "bid.you_won_bid"
     YOU_LOST_BID = "bid.you_lost_bid"
+
+    ORDER_STATUS_UPDATED = "order.status_updated"
 
 
 class Notification(Base):

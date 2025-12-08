@@ -1,0 +1,131 @@
+{% extends "base_email.html" %}
+
+{% block email_title %}Order #{{ order_id | default('—') }} status update · {{ company_name }}{% endblock %}
+{% block header_subtitle %}Order progress update{% endblock %}
+
+{% block content_title %}Order status updated{% endblock %}
+{% block content_description %}
+    Order <strong>#{{ order_id | default('—') }}</strong> for VIN <strong>{{ vin | default('—') }}</strong> changed from
+    <strong>{{ previous_order_status | default('previous') }}</strong> to <strong>{{ new_order_status | default('current') }}</strong>.
+{% endblock %}
+
+{% block main_content %}
+    <div class="status-card">
+        <div class="status-label">Status</div>
+        <div class="status-values">
+            <span class="pill muted">{{ previous_order_status | default('Previous') }}</span>
+            <span class="arrow">→</span>
+            <span class="pill">{{ new_order_status | default('Current') }}</span>
+        </div>
+    </div>
+
+    <div class="detail-grid">
+        <div class="detail-card">
+            <p class="detail-label">Order</p>
+            <p class="detail-value">#{{ order_id | default('—') }}</p>
+            <p class="detail-sub">VIN: {{ vin | default('—') }}</p>
+        </div>
+        <div class="detail-card">
+            <p class="detail-label">Vehicle</p>
+            <p class="detail-value">{{ vehicle_title | default('—') }}</p>
+            <p class="detail-sub">{{ auction | default('—') }} · Lot #{{ lot_id | default('—') }}</p>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <a href="{{ link }}" class="button">Open order</a>
+    </div>
+{% endblock %}
+
+{% block additional_content %}
+    <div class="notice-box info">
+        <div class="icon">ℹ️</div>
+        <div class="notice-text">
+            We will notify you of any further changes. Check your dashboard for full order details and next steps.
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_styles %}
+    .status-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 16px 20px;
+        background: #f5f7fa;
+        margin-bottom: 20px;
+    }
+
+    .status-label {
+        font-size: 13px;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+    }
+
+    .status-values {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .pill {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: #111827;
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 13px;
+    }
+
+    .pill.muted {
+        background: #e5e7eb;
+        color: #374151;
+    }
+
+    .arrow {
+        font-size: 16px;
+        color: #6b7280;
+    }
+
+    .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 24px 0;
+    }
+
+    .detail-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 16px;
+        background: #ffffff;
+    }
+
+    .detail-label {
+        font-size: 13px;
+        color: #6b7280;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .detail-value {
+        font-size: 20px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 4px;
+    }
+
+    .detail-sub {
+        font-size: 14px;
+        color: #4b5563;
+    }
+
+    @media (max-width: 600px) {
+        .status-values {
+            flex-wrap: wrap;
+        }
+    }
+{% endblock %}

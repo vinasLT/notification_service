@@ -35,15 +35,19 @@ class Settings(BaseSettings):
     RABBITMQ_QUEUE_NAME: str = 'notifications'
 
     # twilio
-    TWILIO_ACCOUNT_SID: str
-    TWILIO_AUTH_TOKEN: str
+    TWILIO_ACCOUNT_SID: str = ''
+    TWILIO_AUTH_TOKEN: str = ''
     TWILIO_MESSAGING_SERVICE_SID: str = 'MG0a97155aaa7c29c8d756809d8c7a774d'
 
     # Email
     SENDER_EMAIL: str = 'noreplay@vinas.lt'
     SMPT_SERVER: str = 'smtp.hostinger.com'
     SMPT_PORT: int = 587
-    EMAIL_PASSWORD: str
+    EMAIL_PASSWORD: str = ''
+
+    # Telegram
+    ADMINS_TG_ID: list[int] = [698453049]
+    TELEGRAM_BOT_TOKEN: str
 
     LOGO_URL: str = 'https://i.imgur.com/QNuAY7v.png'
 
