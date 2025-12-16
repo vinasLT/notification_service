@@ -47,7 +47,7 @@ class Settings(BaseSettings):
 
     # Telegram
     ADMINS_TG_ID: list[int] = [698453049]
-    TELEGRAM_BOT_TOKEN: str
+    TELEGRAM_BOT_TOKEN: str = ""
 
     LOGO_URL: str = 'https://i.imgur.com/QNuAY7v.png'
 
