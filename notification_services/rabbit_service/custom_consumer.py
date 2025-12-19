@@ -41,7 +41,7 @@ class RabbitNotificationConsumer(RabbitBaseService):
 
             try:
                 purpose = NotificationRoutingKey(routing_key)
-                destination = NotificationDestination(destination_str)
+                destination = NotificationDestination(destination_str.upper())
             except ValueError as e:
                 logger.error("Invalid notification routing_key or destination", extra={
                     "routing_key": routing_key,
