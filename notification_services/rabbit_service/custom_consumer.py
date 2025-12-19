@@ -41,7 +41,10 @@ class RabbitNotificationConsumer(RabbitBaseService):
 
             try:
                 purpose = NotificationRoutingKey(routing_key)
-                destination = NotificationDestination(destination_str.upper())
+                if not isinstance(destination_str, str):
+                    raise ValueError("Destination must be a string")
+                destination_normalized = destination_str.strip().lower()
+                destination = NotificationDestination(destination_normalized)
             except ValueError as e:
                 logger.error("Invalid notification routing_key or destination", extra={
                     "routing_key": routing_key,
@@ -80,8 +83,6 @@ class RabbitNotificationConsumer(RabbitBaseService):
                 update_data = NotificationUpdate(status=NotificationStatus.FAILURE)
 
             await notification_service.update(notification_obj.id, update_data)
-
-
 
 
 
