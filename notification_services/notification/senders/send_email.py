@@ -20,18 +20,14 @@ async def send_templated_email(data:EmailNotification):
     msg['Subject'] = data.subject
     msg.attach(MIMEText(html_content, "html"))
 
-    try:
-        await aiosmtplib.send(
-            msg,
-            hostname=settings.SMPT_SERVER,
-            port=settings.SMPT_PORT,
-            start_tls=True,
-            username=settings.SENDER_EMAIL,
-            password=settings.EMAIL_PASSWORD,
-        )
-        print("Email sent successfully")
-    except Exception as e:
-        print(f"Error while sending email: {e}")
+    await aiosmtplib.send(
+        msg,
+        hostname=settings.SMPT_SERVER,
+        port=settings.SMPT_PORT,
+        start_tls=True,
+        username=settings.SENDER_EMAIL,
+        password=settings.EMAIL_PASSWORD,
+    )
 
 
 if __name__ == "__main__":
